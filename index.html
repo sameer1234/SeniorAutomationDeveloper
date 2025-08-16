@@ -176,7 +176,7 @@
         </div>
     </footer>
 
-    <!-- Video Modal -->
+    <!-- Video Modal (for project details) -->
     <div id="project-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
         <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-full overflow-y-auto transform scale-95 transition-transform duration-300">
             <div class="p-6">
@@ -206,7 +206,14 @@
             </div>
         </div>
     </div>
-
+    
+    <!-- New Modal for Full Image View -->
+    <div id="image-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
+        <div class="modal-content max-w-full max-h-full overflow-hidden transform scale-95 transition-transform duration-300">
+            <img id="modal-image" src="" alt="Full-size project image" class="max-w-full max-h-screen object-contain rounded-lg shadow-xl">
+            <button id="image-modal-close-btn" class="absolute top-4 right-4 text-white text-3xl font-light bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-75">&times;</button>
+        </div>
+    </div>
 
     <!-- JavaScript for dynamic content and interactivity -->
     <script>
@@ -366,78 +373,107 @@
             const galleryContainer = document.getElementById('gallery-container');
             galleryData.forEach((project, index) => {
                 const card = document.createElement('div');
-                card.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer overflow-hidden';
-                card.dataset.index = index;
+                card.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden';
                 card.innerHTML = `
-                    <img src="${project.imageUrl}" alt="${project.title} thumbnail" class="w-full h-48 object-cover">
+                    <img src="${project.imageUrl}" alt="${project.title} thumbnail" class="w-full h-48 object-cover cursor-pointer project-image">
                     <div class="p-6">
                         <h3 class="font-bold text-xl mb-2 text-gray-800">${project.title}</h3>
                         <p class="text-gray-600 text-sm">${project.summary.substring(0, 80)}...</p>
-                        <span class="text-indigo-600 font-semibold mt-4 inline-block">View Details &rarr;</span>
+                        <a href="#" class="text-indigo-600 font-semibold mt-4 inline-block view-details-link" data-index="${index}">View Details &rarr;</a>
                     </div>
                 `;
                 galleryContainer.appendChild(card);
             });
             
-            // Video modal functionality
-            const modal = document.getElementById('project-modal');
-            const modalTitle = document.getElementById('modal-title');
-            const modalSummary = document.getElementById('modal-summary');
-            const modalFrontReport = document.getElementById('modal-front-report');
-            const modalFinalReport = document.getElementById('modal-final-report');
-            const modalImpact = document.getElementById('modal-impact');
-            const modalTech = document.getElementById('modal-tech');
-            const modalVideoContainer = document.getElementById('modal-video-container');
-            const modalVideo = document.getElementById('modal-video');
+            // --- Modal and Event Handlers ---
+            
+            // Get all modal elements
+            const projectModal = document.getElementById('project-modal');
+            const projectModalTitle = document.getElementById('modal-title');
+            const projectModalSummary = document.getElementById('modal-summary');
+            const projectModalFrontReport = document.getElementById('modal-front-report');
+            const projectModalFinalReport = document.getElementById('modal-final-report');
+            const projectModalImpact = document.getElementById('modal-impact');
+            const projectModalTech = document.getElementById('modal-tech');
+            const projectModalVideoContainer = document.getElementById('modal-video-container');
+            const projectModalVideo = document.getElementById('modal-video');
             const showVideoBtn = document.getElementById('show-video-btn');
-            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const projectModalCloseBtn = document.getElementById('modal-close-btn');
 
+            const imageModal = document.getElementById('image-modal');
+            const imageModalImage = document.getElementById('modal-image');
+            const imageModalCloseBtn = document.getElementById('image-modal-close-btn');
+
+            // Function to close the project details modal
+            const closeProjectModal = () => {
+                projectModalVideo.src = ''; // Stop the video from playing
+                projectModal.classList.remove('open');
+            };
+
+            // Function to close the full image modal
+            const closeImageModal = () => {
+                imageModal.classList.remove('open');
+            };
+            
+            // Event listener for opening the project details modal
             galleryContainer.addEventListener('click', (e) => {
-                const card = e.target.closest('[data-index]');
-                if (card) {
-                    const project = galleryData[card.dataset.index];
-                    modalTitle.textContent = project.title;
-                    modalSummary.textContent = project.summary;
-                    modalImpact.textContent = project.impact;
-                    modalTech.textContent = project.tech;
+                const link = e.target.closest('.view-details-link');
+                if (link) {
+                    e.preventDefault(); // Prevent default link behavior
+                    const project = galleryData[link.dataset.index];
+                    projectModalTitle.textContent = project.title;
+                    projectModalSummary.textContent = project.summary;
+                    projectModalImpact.textContent = project.impact;
+                    projectModalTech.textContent = project.tech;
 
-                    // Set placeholder for reports
-                    modalFrontReport.innerHTML = `
+                    projectModalFrontReport.innerHTML = `
                         <h4 class="font-semibold text-lg mb-2">Front Report</h4>
                         <p class="text-gray-700">${project.frontReport || 'No front report provided.'}</p>
                     `;
-                    modalFinalReport.innerHTML = `
+                    projectModalFinalReport.innerHTML = `
                         <h4 class="font-semibold text-lg mb-2">Final Report</h4>
                         <p class="text-gray-700">${project.finalReport || 'No final report provided.'}</p>
                     `;
                     
-                    // Reset video state
-                    modalVideoContainer.classList.add('hidden');
-                    modalVideo.src = '';
+                    projectModalVideoContainer.classList.add('hidden');
+                    projectModalVideo.src = '';
                     showVideoBtn.classList.remove('hidden');
 
-                    modal.classList.add('open');
+                    projectModal.classList.add('open');
                 }
             });
 
+            // Event listener for opening the full image modal
+            galleryContainer.addEventListener('click', (e) => {
+                const image = e.target.closest('.project-image');
+                if (image) {
+                    imageModalImage.src = image.src;
+                    imageModal.classList.add('open');
+                }
+            });
+            
+            // Event listener for showing the video inside the project modal
             showVideoBtn.addEventListener('click', () => {
-                const project = galleryData[document.querySelector('[data-index]').dataset.index];
+                const project = galleryData[document.querySelector('.view-details-link').dataset.index];
                 if (project && project.videoUrl) {
-                    modalVideo.src = project.videoUrl;
-                    modalVideoContainer.classList.remove('hidden');
+                    projectModalVideo.src = project.videoUrl;
+                    projectModalVideoContainer.classList.remove('hidden');
                     showVideoBtn.classList.add('hidden');
                 }
             });
 
-            const closeModal = () => {
-                modalVideo.src = ''; // Stop the video from playing
-                modal.classList.remove('open');
-            };
+            // Close listeners for both modals
+            projectModalCloseBtn.addEventListener('click', closeProjectModal);
+            projectModal.addEventListener('click', (e) => {
+                if (e.target === projectModal) {
+                    closeProjectModal();
+                }
+            });
 
-            modalCloseBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
+            imageModalCloseBtn.addEventListener('click', closeImageModal);
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) {
+                    closeImageModal();
                 }
             });
 
@@ -495,12 +531,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
