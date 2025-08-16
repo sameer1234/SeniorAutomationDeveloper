@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive CV - Ajit Rammurat Jaiswar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS for styling components and animations -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #2c3e50;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            background-color: #D1D5DB;
+            border: 4px solid #F8F7F4;
+            left: -0.625rem;
+            top: 0;
+            z-index: 10;
+        }
+        .timeline-item:hover::before {
+            background-color: #4A5568;
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease-out;
+        }
+        .modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header and Navigation Bar -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-gray-800">Ajit R. Jaiswar</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#experience" class="text-gray-600 hover:text-gray-900">Experience</a>
+                <a href="#skills" class="text-gray-600 hover:text-gray-900">Skills</a>
+                <a href="#gallery" class="text-gray-600 hover:text-gray-900">Gallery</a>
+                <!--<a href="#services" class="text-gray-600 hover:text-gray-900">Services</a>-->
+                <a href="#contact" class="text-gray-600 hover:text-gray-900">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-gray-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#experience" class="block py-2 text-gray-600 hover:text-gray-900">Experience</a>
+            <a href="#skills" class="block py-2 text-gray-600 hover:text-gray-900">Skills</a>
+            <a href="#gallery" class="block py-2 text-gray-600 hover:text-gray-900">Gallery</a>
+            <a href="#services" class="block py-2 text-gray-600 hover:text-gray-900">Services</a>
+            <a href="#contact" class="block py-2 text-gray-600 hover:text-gray-900">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <section id="hero" class="text-center mb-20">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">Ajit Rammurat Jaiswar</h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-6">Senior Automation Developer (VBA & Python)</p>
+            <p class="max-w-3xl mx-auto text-gray-700 mb-8">
+                Results-driven automation professional with 9+ years of experience in VBA, Python, SQL, and web scraping. Proven track record in macro migration, process automation, and reporting solutions across Banking, Finance, and Operations with extensive cloud and Azure deployment skills.
+            </p>
+            <p class="max-w-3xl mx-auto text-gray-700 mb-8">
+                Actively using AI tools like Copilot, ChatGPT, OpenAI, Cursor, and Google Gemini to significantly increase coding speed and efficiency.
+            </p>
+        </section>
+
+        <!-- Highlights Section -->
+        <section id="highlights" class="mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-5xl font-bold text-indigo-600">9+</h3>
+                    <p class="text-gray-600 mt-2">Years of Experience</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-5xl font-bold text-indigo-600">95%</h3>
+                    <p class="text-gray-600 mt-2">Max Cycle Time Reduction</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-5xl font-bold text-indigo-600">10+</h3>
+                    <p class="text-gray-600 mt-2">Legacy Macros Migrated</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Timeline Section -->
+        <section id="experience" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12">Career Timeline</h2>
+            <div class="max-w-3xl mx-auto">
+                <p class="text-center text-gray-600 mb-12">
+                    This timeline outlines my professional journey, highlighting key roles and responsibilities. Click on any job title to expand and see the specific accomplishments and technologies I worked with during that period. This interactive view is designed to provide a clear picture of my career progression and expertise growth.
+                </p>
+                <div id="timeline-container" class="relative border-l-2 border-gray-200 pl-8">
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Chart Section -->
+        <section id="skills" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12">Technical Skills</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">
+                Below is a visualization of my technical proficiency across various domains. The chart provides a comparative overview of my key skills, based on years of experience and project complexity. This section is intended to give a quick yet comprehensive understanding of my technical capabilities.
+            </p>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12">Project Gallery</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">
+                Here are some of the key projects I've led or developed. Each card represents a significant automation solution that delivered measurable impact. Click on a project to see a summary and a link to a video demonstration.
+            </p>
+            <div id="gallery-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project cards will be injected here by JavaScript -->
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Footer and Contact Info -->
+    <footer id="contact" class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-2xl font-bold mb-4">Get In Touch</h2>
+            <p class="mb-2">Ajit Rammurat Jaiswar</p>
+            <p class="mb-2"><a href="mailto:ajit3.keerti@gmail.com" class="hover:text-indigo-400">ajit3.keerti@gmail.com</a></p>
+            <p class="mb-6"><a href="tel:+919833142455" class="hover:text-indigo-400">+91 98331 42455</a></p>
+            <div class="max-w-2xl mx-auto">
+                <h3 class="font-semibold mb-2">Reason for Seeking New Opportunities</h3>
+                <p class="text-gray-300">
+                    Successfully migrated over 10 Excel macro tools to Python at SBI-SG, but encountered infrastructure constraints including lack of UAT access, deployment issues, and limited IT support. Seeking a technically robust environment to fully implement scalable automation solutions.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div id="project-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-full overflow-y-auto transform scale-95 transition-transform duration-300">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <h3 id="modal-title" class="text-2xl font-bold text-gray-800"></h3>
+                    <button id="modal-close-btn" class="text-gray-500 text-3xl font-light hover:text-gray-800">&times;</button>
+                </div>
+                <hr class="my-4">
+                <p id="modal-summary" class="text-gray-700 mb-4"></p>
+                <div class="flex flex-col md:flex-row md:space-x-4 mb-4">
+                    <div id="modal-front-report" class="flex-1"></div>
+                    <div id="modal-final-report" class="flex-1"></div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Impact</h4>
+                    <p id="modal-impact" class="text-gray-700 mb-4"></p>
+                    <h4 class="font-semibold text-lg mb-2">Technology & Tools</h4>
+                    <p id="modal-tech" class="text-gray-700"></p>
+                </div>
+                <div id="modal-video-container" class="mt-4 hidden">
+                    <h4 class="font-semibold text-lg mb-2">Video Demonstration</h4>
+                    <div class="aspect-w-16 aspect-h-9 mb-4">
+                        <iframe id="modal-video" class="w-full aspect-video rounded-md" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <button id="show-video-btn" class="mt-4 w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-300 shadow-lg">View Video</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JavaScript for dynamic content and interactivity -->
+    <script>
+        const experienceData = [
+            {
+                role: "Senior VBA & Python Developer",
+                company: "SBI-SG (State Bank of India - Securities Services)",
+                period: "May 2025 - Present",
+                details: [
+                    "Migrated 10+ legacy Excel macros to Python automation systems, improving scalability and performance.",
+                    "Built and supported custom solutions for all Custody division departments.",
+                    "Developed an Excel Chatbot Assistant using Python, Tkinter, Pandas, and FPDF.",
+                    "Reduced manual processing time significantly through automation (up to 90%)."
+                ]
+            },
+            {
+                role: "VBA Excel Macro Developer",
+                company: "QBSS (Quatrro Business Support Services)",
+                period: "Feb 2022 - Apr 2025",
+                details: [
+                    "Automated bank reconciliation, DDV, and sales tax reporting using VBA & Python for 800+ clients.",
+                    "Created dashboards, payroll tools, and Avalara-integrated systems.",
+                    "Developed Excel GUI forms for reports like Timesheet, Cash Flow, and Club Pilates.",
+                    "Managed audits and accuracy checks, improving process reliability.",
+                    "Automated solution deployment to Azure for cloud-based OCR/keyword search in PDFs."
+                ]
+            },
+            {
+                role: "VBA Macro Developer - Payroll Operations",
+                company: "Quess Corp (Vodafone Payroll Project)",
+                period: "Nov 2021 - Jan 2022",
+                details: [
+                    "Managed payroll operations and automated reports using VBA, SQL, and Shell scripts.",
+                    "Developed 16+ country-specific templates including CAPEX/OPEX and BOBO.",
+                    "Automated 16 UK-specific reports using VBA, SQL, Shell Scripting, SAP.",
+                ]
+            },
+            {
+                role: "VBA Macro Developer - Risk Reporting & Automation",
+                company: "TeamLease / Adecco (Client: SBI Mutual Fund)",
+                period: "Mar 2019 - Jan 2021",
+                details: [
+                    "Automated risk monitoring, reporting dashboards, and alerts.",
+                    "Designed tools for NSE/BSE daily report extraction and analysis.",
+                    "Developed Equity, Risk Ratio, and Fixed Income fund analysis reports.",
+                    "Conducted EPFO, KRI, and ECO dashboard report automation."
+                ]
+            },
+            {
+                role: "VBA Developer / Software Developer",
+                company: "Softtechs Solutions",
+                period: "Feb 2015 - Mar 2019",
+                details: [
+                    "Developed quotation tools, stock/billing systems, and educational software.",
+                    "Created and maintained websites using ASP.NET and MVC.",
+                    "Tools used: VBA, ASP.NET, SQL Server, MVC, SEO."
+                ]
+            }
+        ];
+
+        const galleryData = [
+            {
+                title: "SBI-SG Multi-Vertical Automation",
+                summary: "Developed a comprehensive suite of automation tools for multiple departments including Cash, Risk, and Client Relations to improve efficiency and reduce manual effort.",
+                frontReport: "This is a placeholder for the front report details.",
+                finalReport: "This is a placeholder for the final report details.",
+                impact: "Projects included Union MF-Limit Monitoring, Automated Access User Login App, Security Master Data Manager, Bank Statement BOD-EOD, and various critical reports like Dividend, PAYIn, and PayOut.",
+                tech: "Python, VBA, Excel Automation, Windows Scheduler",
+                imageUrl: "https://placehold.co/600x400/4A5568/ffffff?text=SBI-SG+Automation",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Example video
+            },
+            {
+                title: "Bank Reconciliation, DDV Automation",
+                summary: "Created a robust VBA and Python solution to automate bank reconciliation and DDV processes for over 600+ clients.",
+                impact: "Reduced the manual reconciliation cycle by over 95%.",
+                tech: "VBA UI UX, Python, Excel, Web Bases",
+                imageUrl: "https://placehold.co/600x400/4A5568/ffffff?text=Bank+Reconciliation",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Example YouTube video
+            },
+            {
+                title: "Sales Tax Automation",
+                summary: "Automated tax preparation and returns by integrating with the Avalara portal.",
+                impact: "Achieved 90% cycle time savings for 876 clients.",
+                tech: "VBA UI UX, Python, Avalara Integration",
+                imageUrl: "https://placehold.co/600x400/4A5568/ffffff?text=Sales+Tax+Automation",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Example YouTube video
+            },
+            {
+                title: "Payroll Reports Automation",
+                summary: "Developed a system to automate payroll reports and uploads.",
+                impact: "Resulted in a 96% reduction in manual effort for 19 clients.",
+                tech: "VBA, Python, Excel",
+                imageUrl: "https://placehold.co/600x400/4A5568/ffffff?text=Payroll+Reports",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Example YouTube video
+            },
+            {
+                title: "PDF Extraction to Excel/CSV",
+                summary: "Created a tool to automatically extract data from PDFs and convert it to Excel or CSV formats.",
+                impact: "Automated extraction for 1,400+ PDFs, with 90% average cycle time savings.",
+                tech: "Python (pandas, pdfplumber), VBA",
+                imageUrl: "https://placehold.co/600x400/4A5568/ffffff?text=PDF+Extraction",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Example YouTube video
+            },
+            {
+                title: "OCR Invoice AI (Azure, EasyOCR)",
+                summary: "A cloud-based solution for extracting data from invoice PDFs using OCR technology.",
+                impact: "Enabled scalable and secure automation for invoice and cash memo processing.",
+                tech: "Python, Azure, OCR",
+                imageUrl: "https://placehold.co/600x400/4A5568/ffffff?text=OCR+Invoice+AI",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Example YouTube video
+            },
+            {
+                title: "Merger PDF",
+                summary: "A Python-based tool for merging multiple PDF documents into a single file.",
+                impact: "A key component of larger automated workflows, streamlining document management.",
+                tech: "Python",
+                imageUrl: "https://placehold.co/600x400/4A5568/ffffff?text=PDF+Merger",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Example YouTube video
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu functionality
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Populate the experience timeline
+            const timelineContainer = document.getElementById('timeline-container');
+            experienceData.forEach(job => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item mb-8 cursor-pointer';
+
+                const content = `
+                    <div class="flex items-center mb-1">
+                        <h3 class="font-bold text-lg text-gray-800">${job.role}</h3>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-2">${job.company} | ${job.period}</p>
+                    <div class="details hidden text-gray-700 text-sm">
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            ${job.details.map(d => `<li>${d}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                item.innerHTML = content;
+                item.addEventListener('click', () => {
+                    item.querySelector('.details').classList.toggle('hidden');
+                });
+                timelineContainer.appendChild(item);
+            });
+
+            // Populate the gallery with project cards
+            const galleryContainer = document.getElementById('gallery-container');
+            galleryData.forEach((project, index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer overflow-hidden';
+                card.dataset.index = index;
+                card.innerHTML = `
+                    <img src="${project.imageUrl}" alt="${project.title} thumbnail" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2 text-gray-800">${project.title}</h3>
+                        <p class="text-gray-600 text-sm">${project.summary.substring(0, 80)}...</p>
+                        <span class="text-indigo-600 font-semibold mt-4 inline-block">View Details &rarr;</span>
+                    </div>
+                `;
+                galleryContainer.appendChild(card);
+            });
+            
+            // Video modal functionality
+            const modal = document.getElementById('project-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalSummary = document.getElementById('modal-summary');
+            const modalFrontReport = document.getElementById('modal-front-report');
+            const modalFinalReport = document.getElementById('modal-final-report');
+            const modalImpact = document.getElementById('modal-impact');
+            const modalTech = document.getElementById('modal-tech');
+            const modalVideoContainer = document.getElementById('modal-video-container');
+            const modalVideo = document.getElementById('modal-video');
+            const showVideoBtn = document.getElementById('show-video-btn');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+
+            galleryContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('[data-index]');
+                if (card) {
+                    const project = galleryData[card.dataset.index];
+                    modalTitle.textContent = project.title;
+                    modalSummary.textContent = project.summary;
+                    modalImpact.textContent = project.impact;
+                    modalTech.textContent = project.tech;
+
+                    // Set placeholder for reports
+                    modalFrontReport.innerHTML = `
+                        <h4 class="font-semibold text-lg mb-2">Front Report</h4>
+                        <p class="text-gray-700">${project.frontReport || 'No front report provided.'}</p>
+                    `;
+                    modalFinalReport.innerHTML = `
+                        <h4 class="font-semibold text-lg mb-2">Final Report</h4>
+                        <p class="text-gray-700">${project.finalReport || 'No final report provided.'}</p>
+                    `;
+                    
+                    // Reset video state
+                    modalVideoContainer.classList.add('hidden');
+                    modalVideo.src = '';
+                    showVideoBtn.classList.remove('hidden');
+
+                    modal.classList.add('open');
+                }
+            });
+
+            showVideoBtn.addEventListener('click', () => {
+                const project = galleryData[document.querySelector('[data-index]').dataset.index];
+                if (project && project.videoUrl) {
+                    modalVideo.src = project.videoUrl;
+                    modalVideoContainer.classList.remove('hidden');
+                    showVideoBtn.classList.add('hidden');
+                }
+            });
+
+            const closeModal = () => {
+                modalVideo.src = ''; // Stop the video from playing
+                modal.classList.remove('open');
+            };
+
+            modalCloseBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Initialize skills chart
+            const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+            new Chart(skillsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Python', 'VBA', 'SQL', 'Automation (General)', 'GUI Design', 'Web Scraping', 'PDF Automation', 'Azure', 'ASP.NET MVC'],
+                    datasets: [{
+                        label: 'Proficiency Level',
+                        data: [95, 95, 80, 90, 85, 80, 90, 75, 70],
+                        backgroundColor: 'rgba(79, 70, 229, 0.8)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + "%"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
